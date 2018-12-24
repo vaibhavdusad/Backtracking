@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include<stdbool.h>
+bool Isafe(int maze[4][4],int x,int y){
+    return((x<4 && y<4) && (maze[x][y]==1));
+}
+bool backtrack(int maze[4][4],int x,int y,int xmoves[2],int ymoves[2]){
+    if((x==3)&&(y==3)){
+        maze[3][3]=-1;
+        printf("Solution Reached\n");
+        return true;
+    }
+    int k;
+    for(k=0;k<2;k++){
+        int xnew=x+xmoves[k];
+        int ynew=y+ymoves[k];
+        if(Isafe(maze,xnew,ynew)){
+            maze[x][y]=-1;
+            backtrack(maze,xnew,ynew,xmoves,ymoves);
+            return true;
+        }
+    }
+    return false;
+}
+void solveMaze(int maze[4][4]){
+    int xmoves[]={0,1};
+    int ymoves[]={1,0};
+    if(backtrack(maze,0,0,xmoves,ymoves)){
+        return;
+    }
+    else{
+        printf("No solution possible\n");
+    }
+    return;
+}
+void printSolution(int sol[4][4]) 
+{ 
+    for (int i = 0; i < 4; i++) 
+    { 
+        for (int j = 0; j < 4; j++) 
+            printf(" %d ", sol[i][j]); 
+        printf("\n"); 
+    } 
+} 
+
+int main() 
+{ 
+    int maze[4][4]  =  { {1, 0, 0, 0}, 
+        {1, 1, 0, 1}, 
+        {0, 1, 0, 0}, 
+        {1, 1, 1, 1} 
+    }; 
+    printSolution(maze);
+    solveMaze(maze); 
+    printSolution(maze);
+    return 0; 
+} 
